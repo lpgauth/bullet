@@ -77,6 +77,9 @@ init(Transport, Req, Opts, <<"POST">>) ->
 		{shutdown, Req2, HandlerState} ->
 			{shutdown, Req2, State#state{handler_state=HandlerState}}
 	end;
+init(_Transport, Req, _Opts, <<"OPTIONS">>) ->
+	{ok, Req2} = cowboy_req:reply(200, [], [], Req),
+	{shutdown, Req2, undefined};
 init(_Transport, Req, _Opts, _Method) ->
 	{ok, Req2} = cowboy_req:reply(405, [], [], Req),
 	{shutdown, Req2, undefined}.
